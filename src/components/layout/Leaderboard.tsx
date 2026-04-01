@@ -91,3 +91,64 @@ export function RankedLeaderboard() {
     </div>
   );
 }
+"use client";
+import { motion } from 'framer-motion';
+import { ARC_RANKS } from '@/lib/ranks';
+import { cn } from '@/lib/utils';
+
+const STAFF_AND_PLAYERS = [
+  { id: "dev-01", name: "YOU (ARCHITECT)", rank: "DEVELOPER", rp: "∞", level: 999 },
+  { id: "dev-02", name: "BROTHER (ARCHITECT)", rank: "DEVELOPER", rp: "∞", level: 999 },
+  { id: "p-01", name: "User_Alpha", rank: "CONQUEROR", rp: 5840, level: 88 },
+  { id: "p-02", name: "Desert_Fox", rank: "ACE", rp: 4620, level: 72 },
+];
+
+export function RankedLeaderboard() {
+  return (
+    <div className="w-full space-y-4">
+      {STAFF_AND_PLAYERS.map((user, index) => {
+        const rankInfo = ARC_RANKS[user.rank as keyof typeof ARC_RANKS];
+        
+        return (
+          <motion.div
+            key={user.id}
+            className={cn(
+              "relative p-4 rounded-[22px] border transition-all duration-700",
+              user.rank === "DEVELOPER" ? "bg-cyan-500/10 border-cyan-400/50" : "bg-black/40 border-white/5"
+            )}
+            style={{ boxShadow: rankInfo.glow }}
+          >
+            <div className="flex items-center justify-between relative z-10">
+              <div className="flex items-center gap-4">
+                {/* ID Tag with Rank Color */}
+                <div className="text-center">
+                  <p className="text-[8px] font-black uppercase tracking-tighter opacity-40">Rank</p>
+                  <p className="text-[10px] font-black italic" style={{ color: rankInfo.color }}>
+                    {rankInfo.tag}
+                  </p>
+                </div>
+                <div>
+                  <h3 className={cn(
+                    "text-sm font-black tracking-tight uppercase",
+                    rankInfo.animation,
+                    user.rank === "DEVELOPER" ? "text-cyan-400" : "text-white"
+                  )}>
+                    {user.name}
+                  </h3>
+                  <p className="text-[9px] text-white/30 font-bold uppercase tracking-widest">Level {user.level}</p>
+                </div>
+              </div>
+
+              <div className="text-right">
+                <p className="text-lg font-black italic leading-none" style={{ color: rankInfo.color }}>
+                  {user.rp}
+                </p>
+                <p className="text-[7px] font-black uppercase tracking-[0.2em] opacity-20 text-white">Rating</p>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
