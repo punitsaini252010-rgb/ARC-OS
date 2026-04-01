@@ -31,4 +31,21 @@ export function getRankColor(rank: string) {
     default: return "text-white/60";
   }
 }
+/**
+ * The 'calculateLevel' function
+ * Level 1 = 0 XP
+ * Level 2 = 100 XP
+ * Every level requires 20% more XP than the last (The "Grind" gets harder)
+ */
+export function calculateLevel(xp: number) {
+  return Math.floor(Math.sqrt(xp / 10)) + 1;
+}
+
+export function getProgressToNextLevel(xp: number) {
+  const currentLevel = calculateLevel(xp);
+  const currentLevelXP = Math.pow(currentLevel - 1, 2) * 10;
+  const nextLevelXP = Math.pow(currentLevel, 2) * 10;
+  const progress = ((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
+  return Math.min(progress, 100);
+}
 
