@@ -1,4 +1,7 @@
 "use client";
+// Inside your Shell function, before the <aside>
+<BroadcastBar userRank="DEVELOPER" /> 
+
 import React from 'react';
 import AliveDesert from '@/components/world/AliveDesert';
 import { cn } from '@/lib/utils';
