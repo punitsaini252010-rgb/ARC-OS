@@ -1,0 +1,31 @@
+import { google } from '@ai-sdk/google';
+import { streamText, tool } from 'ai';
+import { db } from '@/lib/db';
+import { z } from 'zod';
+
+export async function POST(req: Request) {
+  const { messages, userId } = await req.json();
+
+  const result = await streamText({
+    model: google('gemini-1.5-pro'),
+    messages,
+    system: `You are the ARC Intelligence. 
+             You help users grow their wealth and rank. 
+             You can check their XP and suggest Bazaar missions. 
+             Be sharp, tactical, and brief.`,
+    tools: {
+      getUserStats: tool({
+        description: 'Get the users current rank and XP',
+        parameters: z.object({ clerkId: z.string() }),
+        execute: async ({ clerkId }) => {
+          const user = await db.user.findUnique({ where: { clerkId } });
+          return user ? { rank: user.rank, xp: user.xp } : "User not found";
+        },
+      }),
+      // Add more tools here later for the Bazaar
+    },
+  });
+
+  return result.toDataStreamResponse();
+}
+
