@@ -1,25 +1,31 @@
-{
-  "name": "arc-os",
-  "version": "0.1.0",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "postinstall": "prisma generate"
-  },
-  "dependencies": {
-    "@clerk/nextjs": "latest",
-    "@prisma/client": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "svix": "latest"
-  },
-  "devDependencies": {
-    "prisma": "latest",
-    "typescript": "latest",
-    "tailwindcss": "latest",
-    "postcss": "latest",
-    "autoprefixer": "latest"
-  }
+generator client {
+  provider = "prisma-client-js"
 }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @default(cuid())
+  clerkId    String    @unique
+  email      String    @unique
+  rank       String    @default("BRONZE") 
+  xp         Int       @default(0)
+  aiContext  Json?     
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  listings   Listing[]
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  sellerId    String
+  seller      User     @relation(fields: [sellerId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
