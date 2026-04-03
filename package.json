@@ -1,6 +1,7 @@
 {
-  "name": "arc-os",
+  "name": "arc-system",
   "version": "0.1.0",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,14 +14,17 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "svix": "latest"
+    "lucide-react": "latest",
+    "svix": "latest",
+    "ai": "latest"
   },
   "devDependencies": {
     "prisma": "latest",
     "typescript": "latest",
     "tailwindcss": "latest",
     "postcss": "latest",
-    "autoprefixer": "latest"
+    "autoprefixer": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest"
   }
 }
-
